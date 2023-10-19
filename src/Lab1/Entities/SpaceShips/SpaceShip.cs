@@ -30,7 +30,7 @@ public class SpaceShip : IDamageTaker
         AntiNeutrinoEmitter = antiNeutrinoEmitter;
     }
 
-    public bool IsDeflectorActive => _deflector?.IsActive ?? false;
+    public bool IsDeflectorActive => _deflector.IsActive;
     public bool IsArmorActive => _armor.IsActive;
 
     public bool AntiNeutrinoEmitter { get; }
@@ -40,7 +40,7 @@ public class SpaceShip : IDamageTaker
     {
         ArgumentNullException.ThrowIfNull(damage);
 
-        _deflector?.TakeDamage(damage);
+        _deflector.TakeDamage(damage);
         _armor.TakeDamage(damage);
 
         if (damage.Physic > 0)

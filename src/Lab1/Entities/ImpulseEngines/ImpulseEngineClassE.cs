@@ -1,4 +1,6 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab1.Entities.Environments;
+using Itmo.ObjectOrientedProgramming.Lab1.Exceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.ImpulseEngines;
 
@@ -9,11 +11,13 @@ public class ImpulseEngineClassE : ImpulseEngineBase
     public ImpulseEngineClassE(double speedBase, double fuelConsumption, double startFuel)
         : base(fuelConsumption, startFuel)
     {
-        _speedBase = speedBase > 1
-            ? speedBase
-            : throw new ArgumentException("Speed base must be greater than 1", nameof(speedBase));
+        _speedBase = speedBase > 1 ? speedBase : throw new InvalidSpeedBaseException();
     }
 
-    protected override double GetSpentTime(double distance) =>
-        Math.Log(distance * Math.Log(_speedBase), _speedBase);
+    protected override double GetSpentTime(EnvironmentBase environment)
+    {
+        ArgumentNullException.ThrowIfNull(environment);
+
+        return Math.Log(environment.Distance * Math.Log(_speedBase), _speedBase);
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.Environments;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.Flights;
+using Itmo.ObjectOrientedProgramming.Lab1.Exceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.JumpEngines;
 
@@ -12,7 +13,7 @@ public abstract class JumpEngineBase
     {
         _maxDistance = maxDistance >= 0
             ? maxDistance
-            : throw new ArgumentException("Max distance must be positive", nameof(maxDistance));
+            : throw new InvalidMaxSpeedException();
     }
 
     public virtual FlightReport Move(HighDensityNebulae highDensityNebulae)

@@ -15,6 +15,6 @@ public class Deflector : ProtectionBase
     public override void TakeDamage(Damage damage)
     {
         base.TakeDamage(damage);
-        _photonModifier?.TakeDamage(damage);
+        _photonModifier.TakeDamage(damage);
     }
 }
