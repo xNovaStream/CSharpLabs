@@ -11,119 +11,134 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 
 public class JourneyTestSuite
 {
-    public static IEnumerable<object[]> JumpDataGenerator()
-    {
-        yield return new object[] { SpaceShipBuilder.CreatePleasureShuttle(), FlightResult.ImpassableEnvironment };
-        yield return new object[] { SpaceShipBuilder.CreateAugur(), FlightResult.LostShip };
-    }
-
-    public static IEnumerable<object[]> AntimatterFlareDataGenerator()
-    {
-        yield return new object[] { SpaceShipBuilder.CreateVaclas(), FlightResult.DeadCrew };
-        yield return new object[] { SpaceShipBuilder.CreateVaclas(true), FlightResult.Successful };
-    }
-
-    public static IEnumerable<object[]> SpaceWhaleDataGenerator()
-    {
-        yield return new object[] { SpaceShipBuilder.CreateVaclas(), false, FlightResult.DestroyedShip };
-        yield return new object[] { SpaceShipBuilder.CreateAugur(), false, FlightResult.Successful };
-        yield return new object[] { SpaceShipBuilder.CreateMeredian(), true, FlightResult.Successful };
-    }
-
     [Theory]
-    [MemberData(nameof(JumpDataGenerator))]
+    [MemberData(nameof(JourneyDataGenerator.JumpDataGenerate), MemberType = typeof(JourneyDataGenerator))]
     public void JumpTest(SpaceShip spaceShip, FlightResult expectedFlightResult)
     {
         ArgumentNullException.ThrowIfNull(spaceShip);
 
+        // arrange
         var journey = new Journey(new[] { new HighDensityNebulae(50) });
 
-        Assert.Equal(expectedFlightResult, journey.Fly(spaceShip).Result);
+        // act
+        FlightReport spaceShipReport = journey.Fly(spaceShip);
+
+        // assert
+        Assert.Equal(expectedFlightResult, spaceShipReport.Result);
     }
 
     [Theory]
-    [MemberData(nameof(AntimatterFlareDataGenerator))]
+    [MemberData(nameof(JourneyDataGenerator.AntimatterFlareDataGenerate), MemberType = typeof(JourneyDataGenerator))]
     public void AntimatterFlareTest(SpaceShip spaceShip, FlightResult expectedFlightResult)
     {
         ArgumentNullException.ThrowIfNull(spaceShip);
 
+        // arrange
         var journey = new Journey(new[]
             {
                 new HighDensityNebulae(50, new[] { ObstacleBuilder.CreateAntimatterFlare() }),
             });
 
-        Assert.Equal(expectedFlightResult, journey.Fly(spaceShip).Result);
+        // act
+        FlightReport spaceShipReport = journey.Fly(spaceShip);
+
+        // assert
+        Assert.Equal(expectedFlightResult, spaceShipReport.Result);
     }
 
     [Theory]
-    [MemberData(nameof(SpaceWhaleDataGenerator))]
-    public void SpaceWhaleTest(SpaceShip spaceShip, bool extendedDeflectorState, FlightResult expectedFlightResult)
+    [MemberData(nameof(JourneyDataGenerator.SpaceWhaleDataGenerate), MemberType = typeof(JourneyDataGenerator))]
+    public void SpaceWhaleTest(SpaceShip spaceShip, bool expectedDeflectorState, FlightResult expectedFlightResult)
     {
         ArgumentNullException.ThrowIfNull(spaceShip);
 
+        // arrange
         var journey = new Journey(new[]
         {
             new NeutrinoNebulae(50, new[] { ObstacleBuilder.CreateSpaceWhale() }),
         });
 
-        Assert.Equal(expectedFlightResult, journey.Fly(spaceShip).Result);
-        Assert.Equal(extendedDeflectorState, spaceShip.IsDeflectorActive);
+        // act
+        FlightReport spaceShipReport = journey.Fly(spaceShip);
+
+        // assert
+        Assert.Equal(expectedFlightResult, spaceShipReport.Result);
+        Assert.Equal(expectedDeflectorState, spaceShip.IsDeflectorActive);
     }
 
     [Fact]
     public void SmallJourneyComparisonTest()
     {
+        // arrange
         var journey = new Journey(new[] { new Space(10) });
 
         SpaceShip pleasureShuttle = SpaceShipBuilder.CreatePleasureShuttle();
         SpaceShip augur = SpaceShipBuilder.CreateAugur();
 
+        // act
         FlightReport pleasureShuttleReport = journey.Fly(pleasureShuttle);
         FlightReport augurReport = journey.Fly(augur);
 
         var flightReports = new List<FlightReport>(new[] { pleasureShuttleReport, augurReport });
 
-        Assert.Equal(pleasureShuttleReport, FlightComparisonService.FindBestOfFuel(flightReports));
-        Assert.Equal(pleasureShuttleReport, FlightComparisonService.FindBestOfTime(flightReports));
+        FlightReport? bestOfFuelReport = FlightComparisonService.FindBestOfFuel(flightReports);
+        FlightReport? bestOfTimeReport = FlightComparisonService.FindBestOfTime(flightReports);
+
+        // assert
+        Assert.Equal(pleasureShuttleReport, bestOfFuelReport);
+        Assert.Equal(pleasureShuttleReport, bestOfTimeReport);
     }
 
     [Fact]
     public void JumpComparisonTest()
     {
+        // arrange
         var journey = new Journey(new[] { new HighDensityNebulae(50) });
 
         SpaceShip stella = SpaceShipBuilder.CreateStella();
         SpaceShip augur = SpaceShipBuilder.CreateAugur();
 
+        // act
         FlightReport augurReport = journey.Fly(augur);
         FlightReport stellaReport = journey.Fly(stella);
 
         var flightReports = new List<FlightReport>(new[] { augurReport, stellaReport });
 
-        Assert.Equal(stellaReport, FlightComparisonService.FindBestOfFuel(flightReports));
-        Assert.Equal(stellaReport, FlightComparisonService.FindBestOfTime(flightReports));
+        FlightReport? bestOfFuelReport = FlightComparisonService.FindBestOfFuel(flightReports);
+        FlightReport? bestOfTimeReport = FlightComparisonService.FindBestOfTime(flightReports);
+
+        // assert
+        Assert.Equal(stellaReport, bestOfFuelReport);
+        Assert.Equal(stellaReport, bestOfTimeReport);
     }
 
     [Fact]
     public void NeutrinoNebulaeComparisonTest()
     {
+        // arrange
         var journey = new Journey(new[] { new NeutrinoNebulae(50) });
 
         SpaceShip pleasureShuttle = SpaceShipBuilder.CreatePleasureShuttle();
         SpaceShip vaclas = SpaceShipBuilder.CreateVaclas();
 
+        // act
         FlightReport pleasureShuttleReport = journey.Fly(pleasureShuttle);
         FlightReport vaclasReport = journey.Fly(vaclas);
 
         var flightReports = new List<FlightReport> { pleasureShuttleReport, vaclasReport };
 
-        Assert.Equal(vaclasReport, FlightComparisonService.FindBestOfFuel(flightReports));
-        Assert.Equal(vaclasReport, FlightComparisonService.FindBestOfTime(flightReports));
+        FlightReport? bestOfFuelReport = FlightComparisonService.FindBestOfFuel(flightReports);
+        FlightReport? bestOfTimeReport = FlightComparisonService.FindBestOfTime(flightReports);
+
+        // assert
+        Assert.Equal(vaclasReport, bestOfFuelReport);
+        Assert.Equal(vaclasReport, bestOfTimeReport);
     }
 
     [Fact]
     public void MultipleSegmentsJourneyTest()
     {
+        // arrange
         var journey = new Journey(new EnvironmentBase[]
         {
             new Space(100),
@@ -147,6 +162,7 @@ public class JourneyTestSuite
         SpaceShip stella = SpaceShipBuilder.CreateStella();
         SpaceShip augur = SpaceShipBuilder.CreateAugur(true);
 
+        // act
         FlightReport pleasureShuttleReport = journey.Fly(pleasureShuttle);
         FlightReport vaclasReport = journey.Fly(vaclas);
         FlightReport meredianReport = journey.Fly(meredian);
@@ -162,7 +178,11 @@ public class JourneyTestSuite
             augurReport,
         };
 
-        Assert.Equal(vaclasReport, FlightComparisonService.FindBestOfFuel(flightReports));
-        Assert.Equal(vaclasReport, FlightComparisonService.FindBestOfTime(flightReports));
+        FlightReport? bestOfFuelReport = FlightComparisonService.FindBestOfFuel(flightReports);
+        FlightReport? bestOfTimeReport = FlightComparisonService.FindBestOfTime(flightReports);
+
+        // assert
+        Assert.Equal(vaclasReport, bestOfFuelReport);
+        Assert.Equal(vaclasReport, bestOfTimeReport);
     }
 }
