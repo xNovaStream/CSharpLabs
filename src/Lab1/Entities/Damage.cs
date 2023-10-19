@@ -8,6 +8,23 @@ public class Damage
         Mental = mental;
     }
 
-    public uint Physic { get; set; }
-    public bool Mental { get; set; }
+    public uint Physic { get; private set; }
+    public bool Mental { get; private set; }
+
+    public void DecreasePhysic(uint delta)
+    {
+        if (delta > Physic)
+        {
+            Physic = 0;
+        }
+        else
+        {
+            Physic -= delta;
+        }
+    }
+
+    public void DecreaseMental()
+    {
+        Mental = false;
+    }
 }

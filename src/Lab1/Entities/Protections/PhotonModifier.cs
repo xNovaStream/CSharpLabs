@@ -18,6 +18,6 @@ public class PhotonModifier : IDamageTaker
 
         if (_hp <= 0) return;
         _hp -= 1;
-        damage.Mental = false;
+        damage.DecreaseMental();
     }
 }

@@ -23,16 +23,16 @@ public abstract class ProtectionBase : IDamageTaker
 
         if (_damageReduction > damage.Physic)
         {
-            damage.Physic = 0;
+            damage.DecreasePhysic(damage.Physic);
         }
         else if (_hp > damage.Physic - _damageReduction)
         {
             _hp -= damage.Physic - _damageReduction;
-            damage.Physic = 0;
+            damage.DecreasePhysic(damage.Physic);
         }
         else
         {
-            damage.Physic -= _hp + _damageReduction;
+            damage.DecreasePhysic(_hp + _damageReduction);
             _hp = 0;
         }
     }
