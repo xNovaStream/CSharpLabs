@@ -1,18 +1,20 @@
+using System;
+
 namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.Protections;
 
 public class Deflector : ProtectionBase
 {
-    public Deflector(uint hp, uint damageReduction, PhotonModifier? photonModifier)
+    private readonly PhotonModifier _photonModifier;
+
+    public Deflector(uint hp, uint damageReduction, PhotonModifier photonModifier)
         : base(hp, damageReduction)
     {
-        PhotonModifier = photonModifier;
+        _photonModifier = photonModifier ?? throw new ArgumentNullException(nameof(photonModifier));
     }
-
-    private PhotonModifier? PhotonModifier { get; }
 
     public override void TakeDamage(Damage damage)
     {
         base.TakeDamage(damage);
-        PhotonModifier?.TakeDamage(damage);
+        _photonModifier?.TakeDamage(damage);
     }
 }

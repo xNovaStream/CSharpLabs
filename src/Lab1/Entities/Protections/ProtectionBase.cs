@@ -5,35 +5,35 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.Protections;
 
 public abstract class ProtectionBase : IDamageTaker
 {
+    private readonly uint _damageReduction;
+    private uint _hp;
+
     protected ProtectionBase(uint hp, uint damageReduction)
     {
-        Hp = hp;
-        DamageReduction = damageReduction;
+        _hp = hp;
+        _damageReduction = damageReduction;
     }
 
-    public bool IsActive => Hp > 0;
-
-    private uint Hp { get; set; }
-    private uint DamageReduction { get; }
+    public bool IsActive => _hp > 0;
 
     public virtual void TakeDamage(Damage damage)
     {
         ArgumentNullException.ThrowIfNull(damage);
         if (!IsActive) return;
 
-        if (DamageReduction > damage.Physic)
+        if (_damageReduction > damage.Physic)
         {
             damage.Physic = 0;
         }
-        else if (Hp > damage.Physic - DamageReduction)
+        else if (_hp > damage.Physic - _damageReduction)
         {
-            Hp -= damage.Physic - DamageReduction;
+            _hp -= damage.Physic - _damageReduction;
             damage.Physic = 0;
         }
         else
         {
-            damage.Physic -= Hp + DamageReduction;
-            Hp = 0;
+            damage.Physic -= _hp + _damageReduction;
+            _hp = 0;
         }
     }
 }

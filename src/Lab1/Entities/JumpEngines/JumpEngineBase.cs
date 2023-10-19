@@ -6,21 +6,20 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.JumpEngines;
 
 public abstract class JumpEngineBase
 {
+    private readonly double _maxDistance;
+
     protected JumpEngineBase(double maxDistance)
     {
-        MaxDistance = maxDistance > 0
+        _maxDistance = maxDistance >= 0
             ? maxDistance
             : throw new ArgumentException("Max distance must be positive", nameof(maxDistance));
     }
 
-    private double MaxDistance { get; }
-
-    // speed of all jump engine is equal, so time in subspace is equal to distance
-    public FlightReport Move(HighDensityNebulae highDensityNebulae)
+    public virtual FlightReport Move(HighDensityNebulae highDensityNebulae)
     {
         ArgumentNullException.ThrowIfNull(highDensityNebulae);
 
-        return highDensityNebulae.Distance > MaxDistance
+        return highDensityNebulae.Distance > _maxDistance
             ? new FlightReport(FlightResult.LostShip)
             : new FlightReport(
                 FlightResult.Successful,

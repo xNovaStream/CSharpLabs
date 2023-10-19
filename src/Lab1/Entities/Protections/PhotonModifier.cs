@@ -5,19 +5,19 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.Protections;
 
 public class PhotonModifier : IDamageTaker
 {
+    private uint _hp;
+
     public PhotonModifier(uint hp)
     {
-        Hp = hp;
+        _hp = hp;
     }
-
-    private uint Hp { get; set; }
 
     public void TakeDamage(Damage damage)
     {
         ArgumentNullException.ThrowIfNull(damage);
 
-        if (Hp <= 0) return;
-        Hp -= 1;
+        if (_hp <= 0) return;
+        _hp -= 1;
         damage.Mental = false;
     }
 }

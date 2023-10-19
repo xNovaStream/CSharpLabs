@@ -9,5 +9,5 @@ public class Asteroid : ObstacleBase
         _damage = damage;
     }
 
-    public override Damage Damage => new() { Physic = _damage };
+    public override Damage Damage => new(physic: _damage);
 }

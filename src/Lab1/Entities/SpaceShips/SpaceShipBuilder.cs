@@ -8,36 +8,36 @@ public static class SpaceShipBuilder
 {
     public static SpaceShip CreatePleasureShuttle() => new SpaceShip(
         ImpulseEngineBuilder.CreateClassC(),
-        null,
-        null,
-        ProtectionBuilder.CreateArmorClass1(),
+        JumpEngineBuilder.CreateNullJumpEngine(),
+        ProtectionBuilder.CreateNullDeflector(),
+        ProtectionBuilder.CreateArmorClassOne(),
         false);
 
     public static SpaceShip CreateVaclas(bool isPhotonDeflector = false) => new SpaceShip(
         ImpulseEngineBuilder.CreateClassE(),
         JumpEngineBuilder.CreateGamma(),
-        ProtectionBuilder.CreateDeflectorClass1(isPhotonDeflector),
-        ProtectionBuilder.CreateArmorClass2(),
+        ProtectionBuilder.CreateDeflectorClassOne(isPhotonDeflector),
+        ProtectionBuilder.CreateArmorClassTwo(),
         false);
 
     public static SpaceShip CreateMeredian(bool isPhotonDeflector = false) => new SpaceShip(
         ImpulseEngineBuilder.CreateClassE(),
-        null,
-        ProtectionBuilder.CreateDeflectorClass2(isPhotonDeflector),
-        ProtectionBuilder.CreateArmorClass2(),
+        JumpEngineBuilder.CreateNullJumpEngine(),
+        ProtectionBuilder.CreateDeflectorClassTwo(isPhotonDeflector),
+        ProtectionBuilder.CreateArmorClassTwo(),
         true);
 
     public static SpaceShip CreateStella(bool isPhotonDeflector = false) => new SpaceShip(
         ImpulseEngineBuilder.CreateClassC(),
         JumpEngineBuilder.CreateOmega(),
-        ProtectionBuilder.CreateDeflectorClass1(isPhotonDeflector),
-        ProtectionBuilder.CreateArmorClass1(),
+        ProtectionBuilder.CreateDeflectorClassOne(isPhotonDeflector),
+        ProtectionBuilder.CreateArmorClassOne(),
         false);
 
     public static SpaceShip CreateAugur(bool isPhotonDeflector = false) => new SpaceShip(
         ImpulseEngineBuilder.CreateClassE(),
         JumpEngineBuilder.CreateAlpha(),
-        ProtectionBuilder.CreateDeflectorClass3(isPhotonDeflector),
-        ProtectionBuilder.CreateArmorClass3(),
+        ProtectionBuilder.CreateDeflectorClassThree(isPhotonDeflector),
+        ProtectionBuilder.CreateArmorClassThree(),
         false);
 }
