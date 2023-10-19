@@ -5,13 +5,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.Environments;
 
 public class NeutrinoNebulae : EnvironmentBase
 {
-    public NeutrinoNebulae(double distance, IEnumerable<SpaceWhale> obstacles)
-        : base(distance, obstacles)
-    {
-    }
-
-    public NeutrinoNebulae(double distance)
-        : base(distance)
+    public NeutrinoNebulae(double distance, IEnumerable<SpaceWhale>? spaceWhales = null)
+        : base(distance, spaceWhales)
     {
     }
 }

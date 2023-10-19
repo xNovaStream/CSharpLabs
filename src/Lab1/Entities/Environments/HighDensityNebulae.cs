@@ -5,13 +5,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Entities.Environments;
 
 public class HighDensityNebulae : EnvironmentBase
 {
-    public HighDensityNebulae(double distance, IEnumerable<AntimatterFlare> obstacles)
-        : base(distance, obstacles)
-    {
-    }
-
-    public HighDensityNebulae(double distance)
-        : base(distance)
+    public HighDensityNebulae(double distance, IEnumerable<AntimatterFlare>? antimatterFlares = null)
+        : base(distance, antimatterFlares)
     {
     }
 }

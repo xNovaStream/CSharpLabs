@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.Flights;
+using Itmo.ObjectOrientedProgramming.Lab1.Interfaces.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Services;
 
-public static class FlightComparisonService
+public class FlightComparisonService : IFlightComparisonService
 {
-    public static IEnumerable<FlightReport> WhereSuccessfulResult(IEnumerable<FlightReport> flightReports)
+    public IEnumerable<FlightReport> WhereSuccessfulResult(IEnumerable<FlightReport> flightReports)
     {
         ArgumentNullException.ThrowIfNull(flightReports);
 
@@ -19,7 +20,7 @@ public static class FlightComparisonService
         });
     }
 
-    public static FlightReport? FindBestOfTime(IEnumerable<FlightReport> flightReports)
+    public FlightReport? FindBestOfTime(IEnumerable<FlightReport> flightReports)
     {
         ArgumentNullException.ThrowIfNull(flightReports);
 
@@ -29,7 +30,7 @@ public static class FlightComparisonService
                 : Comparer.Default.Compare(flightReport1.SpentTime, flightReport2.SpentTime)));
     }
 
-    public static FlightReport? FindBestOfFuel(IEnumerable<FlightReport> flightReports)
+    public FlightReport? FindBestOfFuel(IEnumerable<FlightReport> flightReports)
     {
         ArgumentNullException.ThrowIfNull(flightReports);
 

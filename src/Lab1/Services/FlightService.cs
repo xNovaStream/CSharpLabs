@@ -4,17 +4,25 @@ using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.Environments;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.Flights;
 using Itmo.ObjectOrientedProgramming.Lab1.Entities.SpaceShips;
+using Itmo.ObjectOrientedProgramming.Lab1.Interfaces.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Services;
 
-public static class FlightService
+public class FlightService : IFlightService
 {
-    public static FlightReport Fly(EnvironmentBase environment, SpaceShip spaceShip)
+    private readonly IDamageService _damageService;
+
+    public FlightService(IDamageService? damageService = null)
+    {
+        _damageService = damageService ?? new DamageService();
+    }
+
+    public FlightReport Fly(EnvironmentBase environment, SpaceShip spaceShip)
     {
         ArgumentNullException.ThrowIfNull(environment);
         ArgumentNullException.ThrowIfNull(spaceShip);
 
-        DamageService.Damage(environment.Obstacles, spaceShip);
+        _damageService.Damage(environment.Obstacles, spaceShip);
         return spaceShip.State switch
         {
             SpaceShipState.Alive => spaceShip.Move(environment),
@@ -25,7 +33,7 @@ public static class FlightService
         };
     }
 
-    public static FlightReport Fly(IEnumerable<EnvironmentBase> environments, SpaceShip spaceShip)
+    public FlightReport Fly(IEnumerable<EnvironmentBase> environments, SpaceShip spaceShip)
     {
         ArgumentNullException.ThrowIfNull(environments);
         ArgumentNullException.ThrowIfNull(spaceShip);
@@ -37,5 +45,13 @@ public static class FlightService
                 flightReport.Add(Fly(environment, spaceShip));
                 return flightReport;
             });
+    }
+
+    public FlightReport Fly(Journey journey, SpaceShip spaceShip)
+    {
+        ArgumentNullException.ThrowIfNull(journey);
+        ArgumentNullException.ThrowIfNull(spaceShip);
+
+        return Fly(journey.Environments, spaceShip);
     }
 }
