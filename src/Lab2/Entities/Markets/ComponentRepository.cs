@@ -7,12 +7,12 @@ using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets;
 
-public class Department<TComponent> : IComponentFactory<TComponent>
+public class ComponentRepository<TComponent> : IComponentRepository<TComponent>
     where TComponent : Component
 {
     private readonly Dictionary<string, TComponent> _componentsByName;
 
-    public Department(IEnumerable<TComponent>? componentsByName = null)
+    public ComponentRepository(IEnumerable<TComponent>? componentsByName = null)
     {
         try
         {
@@ -34,13 +34,20 @@ public class Department<TComponent> : IComponentFactory<TComponent>
         if (!_componentsByName.TryAdd(component.Name, component)) throw new InvalidComponentNameException();
     }
 
-    public TComponent CreateComponent(string name)
+    public void RemoveComponent(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        _componentsByName.Remove(name);
+    }
+
+    public TComponent GetComponent(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
 
         if (_componentsByName.TryGetValue(name, out TComponent? component))
         {
-            return component with { };
+            return component;
         }
         else
         {
@@ -48,10 +55,10 @@ public class Department<TComponent> : IComponentFactory<TComponent>
         }
     }
 
-    public IReadOnlyList<TComponent> CreateComponents(IEnumerable<string> names)
+    public IReadOnlyList<TComponent> GetComponents(IEnumerable<string> names)
     {
         ArgumentNullException.ThrowIfNull(names);
 
-        return names.Select(CreateComponent).ToList();
+        return names.Select(GetComponent).ToList();
     }
 }

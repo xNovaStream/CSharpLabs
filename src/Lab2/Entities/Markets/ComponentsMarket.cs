@@ -17,24 +17,24 @@ public class ComponentsMarket : IComponentsMarket
         IEnumerable<PowerUnit>? powerUnits = null,
         IEnumerable<WifiAdapter>? wifiAdapters = null)
     {
-        MotherboardDepartment = new Department<Motherboard>(motherboards);
-        CpuDepartment = new Department<Cpu>(cpus);
-        CpuCoolingSystemDepartment = new Department<CpuCoolingSystem>(cpuCoolingSystems);
-        RamDepartment = new Department<Ram>(rams);
-        VideoCardDepartment = new Department<VideoCard>(videoCards);
-        DriveDepartment = new Department<Drive>(drive);
-        ComputerCaseDepartment = new Department<ComputerCase>(computerCases);
-        PowerUnitDepartment = new Department<PowerUnit>(powerUnits);
-        WifiAdapterDepartment = new Department<WifiAdapter>(wifiAdapters);
+        MotherboardRepository = new ComponentRepository<Motherboard>(motherboards);
+        CpuRepository = new ComponentRepository<Cpu>(cpus);
+        CpuCoolingSystemRepository = new ComponentRepository<CpuCoolingSystem>(cpuCoolingSystems);
+        RamRepository = new ComponentRepository<Ram>(rams);
+        VideoCardRepository = new ComponentRepository<VideoCard>(videoCards);
+        DriveRepository = new ComponentRepository<Drive>(drive);
+        ComputerCaseRepository = new ComponentRepository<ComputerCase>(computerCases);
+        PowerUnitRepository = new ComponentRepository<PowerUnit>(powerUnits);
+        WifiAdapterRepository = new ComponentRepository<WifiAdapter>(wifiAdapters);
     }
 
-    public Department<Motherboard> MotherboardDepartment { get; }
-    public Department<Cpu> CpuDepartment { get; }
-    public Department<CpuCoolingSystem> CpuCoolingSystemDepartment { get; }
-    public Department<Ram> RamDepartment { get; }
-    public Department<VideoCard> VideoCardDepartment { get; }
-    public Department<Drive> DriveDepartment { get; }
-    public Department<ComputerCase> ComputerCaseDepartment { get; }
-    public Department<PowerUnit> PowerUnitDepartment { get; }
-    public Department<WifiAdapter> WifiAdapterDepartment { get; }
+    public IComponentRepository<Motherboard> MotherboardRepository { get; }
+    public IComponentRepository<Cpu> CpuRepository { get; }
+    public IComponentRepository<CpuCoolingSystem> CpuCoolingSystemRepository { get; }
+    public IComponentRepository<Ram> RamRepository { get; }
+    public IComponentRepository<VideoCard> VideoCardRepository { get; }
+    public IComponentRepository<Drive> DriveRepository { get; }
+    public IComponentRepository<ComputerCase> ComputerCaseRepository { get; }
+    public IComponentRepository<PowerUnit> PowerUnitRepository { get; }
+    public IComponentRepository<WifiAdapter> WifiAdapterRepository { get; }
 }
