@@ -18,4 +18,15 @@ public record Cpu(
     public IReadOnlyList<uint> SupportedMemoryFrequencies { get; init; } =
         new List<uint>(SupportedMemoryFrequencies ??
                        throw new ArgumentNullException(nameof(SupportedMemoryFrequencies)));
+
+    public virtual bool Equals(Cpu? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

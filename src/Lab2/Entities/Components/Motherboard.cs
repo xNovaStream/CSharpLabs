@@ -19,4 +19,15 @@ public record Motherboard(
     public Chipset Chipset { get; init; } = Chipset ?? throw new ArgumentNullException(nameof(Chipset));
     public string FormFactor { get; init; } = FormFactor ?? throw new ArgumentNullException(nameof(FormFactor));
     public Bios Bios { get; init; } = Bios ?? throw new ArgumentNullException(nameof(Bios));
+
+    public virtual bool Equals(Motherboard? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

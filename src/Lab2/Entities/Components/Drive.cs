@@ -5,4 +5,16 @@ public abstract record Drive(
         ConnectionOption ConnectionOption,
         uint Capacity,
         uint ConsumedPower)
-    : Component(Name);
+    : Component(Name)
+{
+    public virtual bool Equals(Drive? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}

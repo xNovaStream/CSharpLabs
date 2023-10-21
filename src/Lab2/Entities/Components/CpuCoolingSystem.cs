@@ -14,4 +14,15 @@ public record CpuCoolingSystem(
     public IReadOnlyList<string> SupportedSockets { get; init; } =
         new List<string>(SupportedSockets ??
                          throw new ArgumentNullException(nameof(SupportedSockets)));
+
+    public virtual bool Equals(CpuCoolingSystem? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

@@ -7,4 +7,15 @@ public record NullVideoCard()
         default,
         default,
         default,
-        default);
+        default)
+{
+    public virtual bool Equals(NullVideoCard? other)
+    {
+        return other != null;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}

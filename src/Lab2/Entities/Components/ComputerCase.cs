@@ -14,4 +14,15 @@ public record ComputerCase(
     public IReadOnlyList<string> SupportedMotherboardFormFactors { get; init; } =
         new List<string>(SupportedMotherboardFormFactors ??
                          throw new ArgumentNullException(nameof(SupportedMotherboardFormFactors)));
+
+    public virtual bool Equals(ComputerCase? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

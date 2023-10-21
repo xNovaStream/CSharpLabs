@@ -21,4 +21,15 @@ public record Ram(
                              throw new ArgumentNullException(nameof(AvailableXmpProfiles)));
     public string FormFactor { get; init; } = FormFactor ??
                                               throw new ArgumentNullException(nameof(FormFactor));
+
+    public virtual bool Equals(Ram? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

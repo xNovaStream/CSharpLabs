@@ -9,4 +9,16 @@ public record VideoCard(
         uint PcieLinesCount,
         uint ChipFrequency,
         uint ConsumedPower)
-    : Component(Name);
+    : Component(Name)
+{
+    public virtual bool Equals(VideoCard? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}

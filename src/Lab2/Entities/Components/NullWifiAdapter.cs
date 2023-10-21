@@ -6,4 +6,15 @@ public record NullWifiAdapter()
         string.Empty,
         default,
         default,
-        default);
+        default)
+{
+    public virtual bool Equals(NullWifiAdapter? other)
+    {
+        return other != null;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}

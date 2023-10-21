@@ -12,4 +12,15 @@ public record WifiAdapter(
 {
     public string WifiStandardVersion { get; init; } = WifiStandardVersion ??
                                                        throw new ArgumentNullException(nameof(WifiStandardVersion));
+
+    public virtual bool Equals(WifiAdapter? other)
+    {
+        if (other == null) return false;
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }
