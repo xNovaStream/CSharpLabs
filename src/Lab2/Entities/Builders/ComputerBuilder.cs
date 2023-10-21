@@ -53,33 +53,33 @@ public record ComputerBuilder(
     public string WifiAdapterName { get; init; } =
         WifiAdapterName ?? throw new ArgumentNullException(nameof(WifiAdapterName));
 
-    public Computer? TryBuild(
+    public Computer Build(
         IComponentsMarket market,
-        IComputerValidationService validationService,
+        IValidator computerValidator,
         out ValidationReport validationReport)
     {
         ArgumentNullException.ThrowIfNull(market);
-        ArgumentNullException.ThrowIfNull(validationService);
+        ArgumentNullException.ThrowIfNull(computerValidator);
 
         VideoCard videoCard = !string.IsNullOrEmpty(VideoCardName)
-            ? market.VideoCardDepartment.CreateComponent(VideoCardName)
+            ? market.VideoCardRepository.GetComponent(VideoCardName)
             : new NullVideoCard();
         WifiAdapter wifiAdapter = !string.IsNullOrEmpty(WifiAdapterName)
-            ? market.WifiAdapterDepartment.CreateComponent(WifiAdapterName)
+            ? market.WifiAdapterRepository.GetComponent(WifiAdapterName)
             : new NullWifiAdapter();
         var computer = new Computer(
-            market.MotherboardDepartment.CreateComponent(MotherboardName),
-            market.CpuDepartment.CreateComponent(CpuName),
-            market.CpuCoolingSystemDepartment.CreateComponent(CpuCoolingSystemName),
-            market.RamDepartment.CreateComponents(RamNames),
+            market.MotherboardRepository.GetComponent(MotherboardName),
+            market.CpuRepository.GetComponent(CpuName),
+            market.CpuCoolingSystemRepository.GetComponent(CpuCoolingSystemName),
+            market.RamRepository.GetComponents(RamNames),
             videoCard,
-            market.DriveDepartment.CreateComponent(DriveName),
-            market.ComputerCaseDepartment.CreateComponent(ComputerCaseName),
-            market.PowerUnitDepartment.CreateComponent(PowerUnitName),
+            market.DriveRepository.GetComponent(DriveName),
+            market.ComputerCaseRepository.GetComponent(ComputerCaseName),
+            market.PowerUnitRepository.GetComponent(PowerUnitName),
             wifiAdapter);
 
-        validationReport = validationService.TryValidate(computer);
+        validationReport = computerValidator.Validate(computer);
 
-        return validationReport.IsValid ? computer : null;
+        return computer;
     }
 }

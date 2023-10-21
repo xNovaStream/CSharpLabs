@@ -5,28 +5,25 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
 
 public class ValidationReport
 {
-    private readonly List<string> _descriptions;
-    public ValidationReport(bool isValid = true, bool haveWarranty = true, string? description = null)
+    private readonly List<string> _warnings;
+    public ValidationReport(bool haveWarranty = true, string? warning = null)
     {
-        IsValid = isValid;
-        HaveWarranty = isValid && haveWarranty;
-        _descriptions = new List<string>();
-        if (description != null)
+        HaveWarranty = haveWarranty;
+        _warnings = new List<string>();
+        if (warning != null)
         {
-            _descriptions.Add(description);
+            _warnings.Add(warning);
         }
     }
 
-    public bool IsValid { get; private set; }
     public bool HaveWarranty { get; private set; }
-    public IReadOnlyList<string> Descriptions => _descriptions;
+    public IReadOnlyList<string> Warnings => _warnings;
 
     public void Add(ValidationReport report)
     {
         ArgumentNullException.ThrowIfNull(report);
 
-        if (IsValid) IsValid = report.IsValid;
         if (HaveWarranty) HaveWarranty = report.HaveWarranty;
-        _descriptions.AddRange(report.Descriptions);
+        _warnings.AddRange(report.Warnings);
     }
 }

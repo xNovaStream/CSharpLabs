@@ -5,8 +5,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
 public interface IComputerBuilder
 {
-    public Computer? TryBuild(
+    public Computer Build(
         IComponentsMarket market,
-        IComputerValidationService validationService,
+        IValidator computerValidator,
         out ValidationReport validationReport);
 }

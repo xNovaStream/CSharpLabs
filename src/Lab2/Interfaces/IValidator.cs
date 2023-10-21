@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-public interface IComputerValidationService
+public interface IValidator
 {
-    public ValidationReport TryValidate(Computer computer);
+    public ValidationReport Validate(Computer computer);
 }
