@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using System.Numerics;
-using Itmo.ObjectOrientedProgramming.Lab2.Entities;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Builders;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets;
-using Itmo.ObjectOrientedProgramming.Lab2.Entities.Services;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
+using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
 using Xunit;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Tests;
 
 public class ComputerBuilderTestSuite
 {
-    private static readonly ComponentsMarket Market = new ComponentsMarket(
+    private readonly ComponentsMarket _market = new ComponentsMarket(
         new[]
         {
             new Motherboard(
@@ -92,7 +91,7 @@ public class ComputerBuilderTestSuite
                 "FURY Beast 8 GB",
                 8,
                 new Dictionary<uint, double> { { 4800, 1.1 } },
-                new List<XmpProfile> { },
+                new List<XmpProfile>(),
                 "DIMM",
                 5,
                 65),
@@ -148,104 +147,82 @@ public class ComputerBuilderTestSuite
                 1),
         });
 
+    private readonly ComputerBuilder _defaultComputerBuilder = new ComputerBuilder(
+        "ASUS PRIME B760M-K",
+        "Intel Core i7-10700F",
+        "DeepCool CK-11508",
+        new List<string> { "FURY Beast 8 GB", "FURY Beast 8 GB" },
+        "KINGSPEC P3-1TB",
+        "AeroCool Aero One Mini",
+        "Exegate ATX-1000PPX");
+
+    private readonly ComputerValidator _computerValidator = new ComputerValidator(
+        new CpuValidator(),
+        new CpuCoolingSystemValidator(),
+        new RamValidator(),
+        new VideoCardValidator(),
+        new CaseValidator(),
+        new PowerUnitValidator(),
+        new WifiAdapterValidator(),
+        new PcieSataValidator());
+
     [Fact]
     public void ValidTest()
     {
         // arrange
-        var validationService = new ComputerValidationService();
-        var computerBuilder = new ComputerBuilder(
-            "ASUS PRIME B760M-K",
-            "Intel Core i7-10700F",
-            "DeepCool CK-11508",
-            new List<string> { "FURY Beast 8 GB", "FURY Beast 8 GB" },
-            "KINGSPEC P3-1TB",
-            "AeroCool Aero One Mini",
-            "Exegate ATX-1000PPX");
+        ComputerBuilder computerBuilder = _defaultComputerBuilder with { };
 
         // act
-        Computer? computer = computerBuilder.TryBuild(Market, validationService, out ValidationReport validationReport);
+        computerBuilder.Build(_market, _computerValidator, out ValidationReport validationReport);
 
         // assert
-        Assert.NotNull(computer);
-        Assert.True(validationReport.IsValid);
         Assert.True(validationReport.HaveWarranty);
-        Assert.Empty(validationReport.Descriptions);
+        Assert.Empty(validationReport.Warnings);
     }
 
     [Fact]
     public void LowVoltageTest()
     {
         // arrange
-        var validationService = new ComputerValidationService();
-        var computerBuilder = new ComputerBuilder(
-            "ASUS PRIME B760M-K",
-            "Intel Core i7-10700F",
-            "DeepCool CK-11508",
-            new List<string> { "FURY Beast 8 GB", "FURY Beast 8 GB" },
-            "KINGSPEC P3-1TB",
-            "AeroCool Aero One Mini",
-            "Exegate LowVoltage");
+        ComputerBuilder computerBuilder = _defaultComputerBuilder with { PowerUnitName = "Exegate LowVoltage" };
 
         // act
-        Computer? computer = computerBuilder.TryBuild(Market, validationService, out ValidationReport validationReport);
+        computerBuilder.Build(_market, _computerValidator, out ValidationReport validationReport);
 
         // assert
-        Assert.NotNull(computer);
-        Assert.True(validationReport.IsValid);
         Assert.True(validationReport.HaveWarranty);
-        Assert.Single(validationReport.Descriptions);
-        Assert.Contains("Warning: peak load less, then required", validationReport.Descriptions);
+        Assert.Single(validationReport.Warnings);
+        Assert.Contains("peak load less, then required", validationReport.Warnings);
     }
 
     [Fact]
     public void WeakCoolerTest()
     {
         // arrange
-        var validationService = new ComputerValidationService();
-        var computerBuilder = new ComputerBuilder(
-            "ASUS PRIME B760M-K",
-            "Intel Core i7-10700F",
-            "DeepCool Fan",
-            new List<string> { "FURY Beast 8 GB", "FURY Beast 8 GB" },
-            "KINGSPEC P3-1TB",
-            "AeroCool Aero One Mini",
-            "Exegate ATX-1000PPX",
-            "GIGABITE NVIDEA GTX 1050 TI");
+        ComputerBuilder computerBuilder = _defaultComputerBuilder with { CpuCoolingSystemName = "DeepCool Fan" };
 
         // act
-        Computer? computer = computerBuilder.TryBuild(Market, validationService, out ValidationReport validationReport);
+        computerBuilder.Build(_market, _computerValidator, out ValidationReport validationReport);
 
         // assert
-        Assert.NotNull(computer);
-        Assert.True(validationReport.IsValid);
         Assert.False(validationReport.HaveWarranty);
-        Assert.Single(validationReport.Descriptions);
-        Assert.Contains("Warning: cpu cooling system's TDP is too low", validationReport.Descriptions);
+        Assert.Single(validationReport.Warnings);
+        Assert.Contains("cpu cooling system's TDP is too low", validationReport.Warnings);
     }
 
     [Fact]
     public void InvalidTest()
     {
         // arrange
-        var validationService = new ComputerValidationService();
-        var computerBuilder = new ComputerBuilder(
-            "ASUS PRIME B760M-K",
-            "Intel Core i7-10700F",
-            "DeepCool CK-11508",
-            new List<string> { "FURY Beast 8 GB", "FURY Beast 8 GB", "FURY Beast 8 GB" },
-            "KINGSPEC P3-1TB",
-            "AeroCool Aero One Mini",
-            "Exegate ATX-1000PPX",
-            "GIGABITE NVIDEA GTX 1050 TI");
+        ComputerBuilder computerBuilder = _defaultComputerBuilder with
+        {
+            WifiAdapterName = "Wi-Fi TP-LINK TL-WN781ND PCI Express",
+        };
 
         // act
-        Computer? computer = computerBuilder.TryBuild(Market, validationService, out ValidationReport validationReport);
+        void Action() => computerBuilder.Build(_market, _computerValidator, out ValidationReport _);
 
         // assert
-        Assert.Null(computer);
-        Assert.False(validationReport.IsValid);
-        Assert.False(validationReport.HaveWarranty);
-        Assert.Single(validationReport.Descriptions);
-        Assert.Contains("Fail: too many ram plates", validationReport.Descriptions);
+        Assert.Throws<WifiAdapterValidationException>(Action);
     }
 }
