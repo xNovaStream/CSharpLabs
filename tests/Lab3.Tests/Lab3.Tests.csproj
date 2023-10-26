@@ -25,4 +25,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageVersion Update="NSubstitute" Version="5.1.0" />
+    </ItemGroup>
+
 </Project>
