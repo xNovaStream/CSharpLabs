@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Crayon" />
+        <PackageReference Include="NSubstitute" />
     </ItemGroup>
 
 
