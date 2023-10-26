@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>Itmo.ObjectOrientedProgramming.Lab3.Tests</RootNamespace>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
@@ -12,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="NSubstitute" />
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
