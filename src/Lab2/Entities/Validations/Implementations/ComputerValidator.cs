@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations.Implementations;
 
 public class ComputerValidator : IValidator
 {

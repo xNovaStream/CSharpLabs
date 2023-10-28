@@ -10,8 +10,9 @@ public record WifiAdapter(
         uint ConsumedPower)
     : Component(Name)
 {
-    public string WifiStandardVersion { get; init; } = WifiStandardVersion ??
-                                                       throw new ArgumentNullException(nameof(WifiStandardVersion));
+    public string WifiStandardVersion { get; init; } = string.IsNullOrEmpty(WifiStandardVersion)
+        ? throw new ArgumentNullException(nameof(WifiStandardVersion))
+        : WifiStandardVersion;
 
     public virtual bool Equals(WifiAdapter? other)
     {

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets.Implementations;
 
 public class ComponentsMarket : IComponentsMarket
 {

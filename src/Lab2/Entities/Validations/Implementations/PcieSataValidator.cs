@@ -1,9 +1,8 @@
 using System;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations.Implementations;
 
 public class PcieSataValidator : IValidator
 {

@@ -2,7 +2,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 
 public record NullVideoCard()
     : VideoCard(
-        string.Empty,
+        "Default",
         default,
         default,
         default,

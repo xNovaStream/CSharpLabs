@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 
 public record Bios(
     string Type,
     string Version,
-    IReadOnlyList<string> SupportedCpus)
+    IReadOnlyList<Cpu> SupportedCpus)
 {
-    public string Type { get; init; } = Type ?? throw new ArgumentNullException(nameof(Type));
-    public string Version { get; init; } = Version ?? throw new ArgumentNullException(nameof(Version));
-    public IReadOnlyList<string> SupportedCpus { get; init; } =
-        new List<string>(SupportedCpus ?? throw new ArgumentNullException(nameof(SupportedCpus)));
+    public string Type { get; init; } = string.IsNullOrEmpty(Type) ? throw new InvalidNameException() : Type;
+    public string Version { get; init; } = string.IsNullOrEmpty(Version) ? throw new InvalidNameException() : Version;
+    public IReadOnlyList<Cpu> SupportedCpus { get; init; } =
+        new List<Cpu>(SupportedCpus ?? throw new ArgumentNullException(nameof(SupportedCpus)));
 
     public virtual bool Equals(Bios? other)
     {

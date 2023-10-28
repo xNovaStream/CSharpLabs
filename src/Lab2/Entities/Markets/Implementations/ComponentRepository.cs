@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets.Implementations;
 
 public class ComponentRepository<TComponent> : IComponentRepository<TComponent>
     where TComponent : Component
@@ -14,15 +13,8 @@ public class ComponentRepository<TComponent> : IComponentRepository<TComponent>
 
     public ComponentRepository(IEnumerable<TComponent>? componentsByName = null)
     {
-        try
-        {
-            _componentsByName = componentsByName?.ToDictionary(component => component.Name)
-                                ?? new Dictionary<string, TComponent>();
-        }
-        catch (ArgumentException)
-        {
-            throw new InvalidComponentNameException();
-        }
+        _componentsByName = componentsByName?.ToDictionary(component => component.Name)
+                            ?? new Dictionary<string, TComponent>();
     }
 
     public IReadOnlyDictionary<string, TComponent> ComponentsByName => _componentsByName;
@@ -31,7 +23,7 @@ public class ComponentRepository<TComponent> : IComponentRepository<TComponent>
     {
         ArgumentNullException.ThrowIfNull(component);
 
-        if (!_componentsByName.TryAdd(component.Name, component)) throw new InvalidComponentNameException();
+        if (!_componentsByName.TryAdd(component.Name, component)) throw new InvalidNameException();
     }
 
     public void RemoveComponent(string name)
@@ -51,7 +43,7 @@ public class ComponentRepository<TComponent> : IComponentRepository<TComponent>
         }
         else
         {
-            throw new InvalidComponentNameException();
+            throw new InvalidNameException();
         }
     }
 

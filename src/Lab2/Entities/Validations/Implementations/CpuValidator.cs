@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations.Implementations;
 
 public class CpuValidator : IValidator
 {
@@ -16,7 +15,7 @@ public class CpuValidator : IValidator
             throw new CpuValidationException("sockets on the motherboard and processor not compatible");
         }
 
-        if (!computer.Motherboard.Bios.SupportedCpus.Contains(computer.Cpu.Name))
+        if (!computer.Motherboard.Bios.SupportedCpus.Contains(computer.Cpu))
         {
             throw new CpuValidationException("cpu not supported by BIOS");
         }

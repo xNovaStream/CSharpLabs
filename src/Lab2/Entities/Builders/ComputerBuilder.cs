@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
+using Itmo.ObjectOrientedProgramming.Lab2.Entities.Factories.Implementations;
+using Itmo.ObjectOrientedProgramming.Lab2.Entities.Markets;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
+using Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations.Implementations;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Builders;
 
@@ -17,7 +18,6 @@ public record ComputerBuilder(
         string PowerUnitName,
         string VideoCardName = "",
         string WifiAdapterName = "")
-    : IComputerBuilder
 {
     public ComputerBuilder(
         Computer computer)
@@ -61,22 +61,18 @@ public record ComputerBuilder(
         ArgumentNullException.ThrowIfNull(market);
         ArgumentNullException.ThrowIfNull(computerValidator);
 
-        VideoCard videoCard = !string.IsNullOrEmpty(VideoCardName)
-            ? market.VideoCardRepository.GetComponent(VideoCardName)
-            : new NullVideoCard();
-        WifiAdapter wifiAdapter = !string.IsNullOrEmpty(WifiAdapterName)
-            ? market.WifiAdapterRepository.GetComponent(WifiAdapterName)
-            : new NullWifiAdapter();
+        var factories = new ComponentFactories(market);
+
         var computer = new Computer(
-            market.MotherboardRepository.GetComponent(MotherboardName),
-            market.CpuRepository.GetComponent(CpuName),
-            market.CpuCoolingSystemRepository.GetComponent(CpuCoolingSystemName),
-            market.RamRepository.GetComponents(RamNames),
-            videoCard,
-            market.DriveRepository.GetComponent(DriveName),
-            market.ComputerCaseRepository.GetComponent(ComputerCaseName),
-            market.PowerUnitRepository.GetComponent(PowerUnitName),
-            wifiAdapter);
+            factories.MotherboardFactory.Create(MotherboardName),
+            factories.CpuFactory.Create(CpuName),
+            factories.CpuCoolingSystemFactory.Create(CpuCoolingSystemName),
+            factories.RamFactory.CreateMultiple(RamNames).ToList(),
+            factories.VideoCardFactory.Create(VideoCardName),
+            factories.DriveFactory.Create(DriveName),
+            factories.ComputerCaseFactory.Create(ComputerCaseName),
+            factories.PowerUnitFactory.Create(PowerUnitName),
+            factories.WifiAdapterFactory.Create(WifiAdapterName));
 
         validationReport = computerValidator.Validate(computer);
 

@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.Exceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.Interfaces;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations;
+namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Validations.Implementations;
 
 public class RamValidator : IValidator
 {
@@ -30,7 +29,7 @@ public class RamValidator : IValidator
             }
 
             if (!computer.Motherboard.Chipset.AvailableMemoryFrequencies.Any(frequency =>
-                    ram.VoltagesBySupportedFrequency.ContainsKey(frequency)) &&
+                    ram.JedecPairs.Any(jedecPair => jedecPair.Frequency == frequency)) &&
                 !computer.Cpu.SupportedMemoryFrequencies.Any(frequency =>
                     ram.AvailableXmpProfiles.Any(xmpProfile => xmpProfile.Frequency == frequency)))
             {

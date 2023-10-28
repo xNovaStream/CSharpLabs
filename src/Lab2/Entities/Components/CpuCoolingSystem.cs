@@ -7,12 +7,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Entities.Components;
 public record CpuCoolingSystem(
         string Name,
         Vector3 Size,
-        IReadOnlyList<string> SupportedSockets,
+        IReadOnlyList<Socket> SupportedSockets,
         uint Tdp)
     : Component(Name)
 {
-    public IReadOnlyList<string> SupportedSockets { get; init; } =
-        new List<string>(SupportedSockets ??
+    public IReadOnlyList<Socket> SupportedSockets { get; init; } =
+        new List<Socket>(SupportedSockets ??
                          throw new ArgumentNullException(nameof(SupportedSockets)));
 
     public virtual bool Equals(CpuCoolingSystem? other)
