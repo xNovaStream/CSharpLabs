@@ -1,7 +1,8 @@
-using Itmo.ObjectOrientedProgramming.Lab3.Entities;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Addressees;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Addressees.Implementations;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Loggers;
+using Itmo.ObjectOrientedProgramming.Lab3.Entities.Messengers.Implementations;
+using Itmo.ObjectOrientedProgramming.Lab3.Entities.Topics;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Users;
 using Itmo.ObjectOrientedProgramming.Lab3.Exceptions;
 using NSubstitute;
@@ -16,10 +17,9 @@ public class MessageSystemTestSuite
     {
         // arrange
         var user = new User("User", 18);
-        var message = new Message("Greeting", "Hello User! How are you?");
 
         // act
-        user.GetMessage(message);
+        user.GetMessage(MessageSystemTestData.Message);
         UserMessageStatus newMessageStatus = user.Messages[0].Status;
 
         // assert
@@ -31,10 +31,9 @@ public class MessageSystemTestSuite
     {
         // arrange
         var user = new User("User", 18);
-        var message = new Message("Greeting", "Hello User! How are you?");
 
         // act
-        user.GetMessage(message);
+        user.GetMessage(MessageSystemTestData.Message);
         UserMessage userMessage = user.Messages[0];
         userMessage.Read();
 
@@ -47,10 +46,9 @@ public class MessageSystemTestSuite
     {
         // arrange
         var user = new User("User", 18);
-        var message = new Message("Greeting", "Hello User! How are you?");
 
         // act
-        user.GetMessage(message);
+        user.GetMessage(MessageSystemTestData.Message);
         UserMessage userMessage = user.Messages[0];
         userMessage.Read();
         void Action() => userMessage.Read();
@@ -65,13 +63,12 @@ public class MessageSystemTestSuite
         // arrange
         IAddressee addressee = Substitute.For<IAddressee>();
         var protectedAddressee = new ProtectedAddressee(addressee, 5);
-        var message = new Message("Greeting", "Hello User! How are you?", 1);
 
         // act
-        protectedAddressee.GetMessage(message);
+        protectedAddressee.SendMessage(MessageSystemTestData.ImportantMessage);
 
         // assert
-        addressee.DidNotReceive().GetMessage(message);
+        addressee.DidNotReceive().SendMessage(MessageSystemTestData.ImportantMessage);
     }
 
     [Fact]
@@ -81,15 +78,13 @@ public class MessageSystemTestSuite
         IAddressee addressee = Substitute.For<IAddressee>();
         ILogger logger = Substitute.For<ILogger>();
         var loggingAddressee = new LoggingAddressee(addressee, logger);
-        var message = new Message("Greeting", "Hello User! How are you?");
 
         // act
-        loggingAddressee.GetMessage(message);
+        loggingAddressee.SendMessage(MessageSystemTestData.Message);
 
         // assert
-        addressee.Received().GetMessage(message);
-        logger.Received().Log("Log\n" +
-                              "Addressee got message\n");
+        addressee.Received().SendMessage(MessageSystemTestData.Message);
+        logger.Received().Log("Addressee got message\n");
     }
 
     [Fact]
@@ -99,14 +94,29 @@ public class MessageSystemTestSuite
         ILogger logger = Substitute.For<ILogger>();
         var messenger = new Messenger("VK", logger);
         var addressee = new MessengerAddressee(messenger);
-        var message = new Message("Greeting", "Hello User! How are you?");
 
         // act
-        addressee.GetMessage(message);
+        addressee.SendMessage(MessageSystemTestData.Message);
 
         // assert
         logger.Received().Log("Messenger VK\n" +
-                              "Greeting\n" +
-                              "Hello User! How are you?\n");
+                              MessageSystemTestData.Message.Header + '\n' +
+                              MessageSystemTestData.Message.Text + "\n");
+    }
+
+    [Fact]
+    public void TopicRepositoryTest()
+    {
+        // arrange
+        IAddressee addressee = Substitute.For<IAddressee>();
+        var topic = new Topic("Topic", addressee);
+        var topicRepository = new TopicRepository();
+
+        // act
+        topicRepository.Add(topic);
+        topicRepository.Get("Topic").Send(MessageSystemTestData.Message);
+
+        // assert
+        addressee.Received().SendMessage(MessageSystemTestData.Message);
     }
 }
