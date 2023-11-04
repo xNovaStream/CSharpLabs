@@ -14,7 +14,7 @@ public class DisplayAddressee : IAddressee
         _display = display;
     }
 
-    public void GetMessage(Message message)
+    public void SendMessage(Message message)
     {
         ArgumentNullException.ThrowIfNull(message);
 

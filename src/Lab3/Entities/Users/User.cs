@@ -8,18 +8,18 @@ public class User
 {
     private readonly List<UserMessage> _messages = new();
 
-    public User(string name, uint age, string description = "")
+    public User(string name, int age, string description = "")
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(description);
 
         Name = string.IsNullOrEmpty(name) ? throw new EmptyNameException() : name;
-        Age = age;
+        Age = age >= 0 ? age : throw new InvalidAgeException();
         Description = description;
     }
 
     public string Name { get; }
-    public uint Age { get; }
+    public int Age { get; }
     public string Description { get; }
 
     public IReadOnlyList<UserMessage> Messages => _messages;

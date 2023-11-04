@@ -14,7 +14,7 @@ public class UserAddressee : IAddressee
         _user = user;
     }
 
-    public void GetMessage(Message message)
+    public void SendMessage(Message message)
     {
         ArgumentNullException.ThrowIfNull(message);
 

@@ -1,11 +1,11 @@
 using System;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Addressees;
 
-namespace Itmo.ObjectOrientedProgramming.Lab3.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab3.Entities.Topics;
 
 public class Topic
 {
-    private IAddressee _addressee;
+    private readonly IAddressee _addressee;
 
     public Topic(string name, IAddressee addressee)
     {
@@ -20,6 +20,6 @@ public class Topic
 
     public void Send(Message message)
     {
-        _addressee.GetMessage(message);
+        _addressee.SendMessage(message);
     }
 }

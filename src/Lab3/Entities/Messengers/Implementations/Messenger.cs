@@ -2,9 +2,9 @@ using System;
 using Itmo.ObjectOrientedProgramming.Lab3.Entities.Loggers;
 using Itmo.ObjectOrientedProgramming.Lab3.Exceptions;
 
-namespace Itmo.ObjectOrientedProgramming.Lab3.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab3.Entities.Messengers.Implementations;
 
-public class Messenger
+public class Messenger : IMessenger
 {
     private readonly ILogger _logger;
 

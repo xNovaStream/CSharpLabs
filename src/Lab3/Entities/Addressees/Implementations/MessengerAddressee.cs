@@ -1,19 +1,20 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab3.Entities.Messengers;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Entities.Addressees.Implementations;
 
 public class MessengerAddressee : IAddressee
 {
-    private readonly Messenger _messenger;
+    private readonly IMessenger _messenger;
 
-    public MessengerAddressee(Messenger messenger)
+    public MessengerAddressee(IMessenger messenger)
     {
         ArgumentNullException.ThrowIfNull(messenger);
 
         _messenger = messenger;
     }
 
-    public void GetMessage(Message message)
+    public void SendMessage(Message message)
     {
         ArgumentNullException.ThrowIfNull(message);
 

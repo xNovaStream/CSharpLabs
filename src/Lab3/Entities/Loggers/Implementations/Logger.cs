@@ -8,6 +8,7 @@ public class Logger : ILogger
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        Console.WriteLine(text);
+        Console.WriteLine("Log\n" +
+                          text);
     }
 }

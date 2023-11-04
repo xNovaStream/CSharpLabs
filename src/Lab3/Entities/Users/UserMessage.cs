@@ -5,7 +5,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Entities.Users;
 
 public class UserMessage : Message
 {
-    public UserMessage(string header, string text, uint importanceLevel)
+    public UserMessage(string header, string text, int importanceLevel)
         : base(header, text, importanceLevel)
     {
     }

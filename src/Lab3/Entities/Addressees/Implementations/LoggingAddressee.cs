@@ -24,12 +24,11 @@ public class LoggingAddressee : IAddressee
         _addressee = addressee;
     }
 
-    public void GetMessage(Message message)
+    public void SendMessage(Message message)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        _addressee.GetMessage(message);
-        _logger.Log("Log\n" +
-                    "Addressee got message\n");
+        _addressee.SendMessage(message);
+        _logger.Log("Addressee got message\n");
     }
 }
