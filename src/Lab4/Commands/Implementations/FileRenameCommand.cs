@@ -18,6 +18,8 @@ public class FileRenameCommand : ICommand
 
     public void Execute(FileSystemContext fileSystemContext)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(fileSystemContext);
+
+        fileSystemContext.FileSystem.FileRename(_path, _newName);
     }
 }

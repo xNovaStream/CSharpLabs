@@ -15,6 +15,8 @@ public class FileDeleteCommand : ICommand
 
     public void Execute(FileSystemContext fileSystemContext)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(fileSystemContext);
+
+        fileSystemContext.FileSystem.FileDelete(_path);
     }
 }

@@ -18,6 +18,8 @@ public class FileCopyCommand : ICommand
 
     public void Execute(FileSystemContext fileSystemContext)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(fileSystemContext);
+
+        fileSystemContext.FileSystem.FileCopy(_sourcePath, _destinationPath);
     }
 }

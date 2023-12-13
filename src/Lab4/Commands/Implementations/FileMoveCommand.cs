@@ -18,6 +18,8 @@ public class FileMoveCommand : ICommand
 
     public void Execute(FileSystemContext fileSystemContext)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(fileSystemContext);
+
+        fileSystemContext.FileSystem.FileMove(_sourcePath, _destinationPath);
     }
 }
