@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab4.Exceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.TextFormatters.Implementations;
@@ -10,7 +11,7 @@ public class TextFormatter : ITextFormatter
         ArgumentNullException.ThrowIfNull(text);
         if (depth < 0) throw new InvalidDepthException();
 
-        return (' ' * depth) + text;
+        return string.Concat(Enumerable.Repeat(" ", depth)) + text;
     }
 
     public string TreeListFileFormat(string text, int depth)
@@ -18,6 +19,6 @@ public class TextFormatter : ITextFormatter
         ArgumentNullException.ThrowIfNull(text);
         if (depth < 0) throw new InvalidDepthException();
 
-        return (' ' * depth) + text;
+        return string.Concat(Enumerable.Repeat(" ", depth)) + text;
     }
 }

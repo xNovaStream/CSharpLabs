@@ -32,7 +32,7 @@ public class LocalDirectory : IDirectory
         if (!_pathValidator.IsValidDirectory())
             throw new InvalidPathException("Directory not exist or path not fully qualified");
 
-        return Path.GetFileName(_path);
+        return Path.GetPathRoot(_path) == Path.GetFullPath(_path) ? _path : Path.GetFileName(_path);
     }
 
     public IReadOnlyList<IFile> GetFiles()

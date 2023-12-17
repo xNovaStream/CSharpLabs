@@ -39,7 +39,7 @@ public class FileSystemVisitor : IFileSystemVisitor
 
         _writer.WriteTreeListDirectory(directory.GetName(), _depth);
 
-        if (_depth < _maxDepth) return;
+        if (_depth == _maxDepth) return;
 
         foreach (IFile file in directory.GetFiles())
         {

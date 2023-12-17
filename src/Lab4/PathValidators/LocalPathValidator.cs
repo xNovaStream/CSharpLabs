@@ -25,7 +25,7 @@ public class LocalPathValidator
     public bool IsValidDirectory()
     {
         if (!Path.IsPathFullyQualified(_path)) return false;
-        if (!File.Exists(_path)) return false;
+        if (!Directory.Exists(_path)) return false;
 
         return true;
     }
