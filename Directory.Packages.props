@@ -8,6 +8,7 @@
     <PackageVersion Include="Itmo.Dev.Platform.Postgres" Version="1.1.75" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageVersion Include="Crayon" Version="2.0.69" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="SourceKit.Analyzers.Collections" Version="1.0.4" />
