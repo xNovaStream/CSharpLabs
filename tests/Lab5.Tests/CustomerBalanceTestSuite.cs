@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Lab5.Application.Abstractions.Repositories;
 using Lab5.Application.Contracts.Accounts.Balances;
 using Lab5.Application.Contracts.Accounts.Logins;
@@ -13,7 +14,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab5.Tests;
 public class CustomerBalanceTestSuite
 {
     [Fact]
-    public async void WithdrawMoneyTest()
+    public async Task WithdrawMoneyTest()
     {
         // arrange
         ICustomerRepository customerRepository = Substitute.For<ICustomerRepository>();
@@ -54,7 +55,7 @@ public class CustomerBalanceTestSuite
     }
 
     [Fact]
-    public async void PutMoneyTest()
+    public async Task PutMoneyTest()
     {
         // arrange
         ICustomerRepository customerRepository = Substitute.For<ICustomerRepository>();
