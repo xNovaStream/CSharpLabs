@@ -2,6 +2,15 @@
 
     <PropertyGroup>
         <RootNamespace>Itmo.ObjectOrientedProgramming.Lab4</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" />
+    </ItemGroup>
+
+
+
+
+
 
 </Project>
